@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ModaPay - Promo Dashboard</title>
-    <link rel="stylesheet" href="style/stylee.css">
+    <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -39,6 +39,14 @@
                     <i class="fas fa-users"></i>
                     <span>Employment</span>
                 </a>
+                <a href="recentOrder.php" class="menu-item">
+                    <i class="fas fa-receipt"></i>
+                    <span>Recent Order</span>
+                </a>
+                <a href="financial.php" class="menu-item">
+                    <i class="fas fa-chart-line"></i> 
+                    <span>Financial Statements</span>
+                </a>
             </nav>
         </aside>
 
@@ -62,16 +70,78 @@
                     <button class="icon-button">
                         <i class="fas fa-th-large"></i>
                     </button>
-                    <button class="icon-button">
-                        <i class="fas fa-bell"></i>
-                    </button>
                 </div>
             </header>
             
             <!-- Main Content -->
             <div id="table-content">
+                <!-- Create Promo Form -->
+                <div class="create-promo-section">
+                    <h2>Create Promo</h2>
+                    <form class="create-promo-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="promo-name">Promo name</label>
+                                <input type="text" id="promo-name" placeholder="Promo name" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="product-type">Product type</label>
+                                <div class="custom-select">
+                                    <select id="product-type" class="form-control">
+                                        <option value="" disabled selected>Product type</option>
+                                        <option value="all">All Products</option>
+                                        <option value="clothing">Clothing</option>
+                                        <option value="electronics">Electronics</option>
+                                        <option value="accessories">Accessories</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="via-payment">Via payment</label>
+                                <div class="custom-select">
+                                    <select id="via-payment" class="form-control">
+                                        <option value="" disabled selected>Via payment</option>
+                                        <option value="credit">Credit Card</option>
+                                        <option value="debit">Debit Card</option>
+                                        <option value="ewallet">E-Wallet</option>
+                                        <option value="bank">Bank Transfer</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <div class="custom-select">
+                                    <select id="status" class="form-control">
+                                        <option value="public" selected>Public</option>
+                                        <option value="private">Private</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group small-input">
+                                <label for="discount">Discount</label>
+                                <div class="input-with-icon">
+                                    <input type="number" id="discount" placeholder="%" class="form-control">
+                                    <span class="input-icon">%</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="expired-date">Expired date</label>
+                                <input type="date" id="expired-date" class="form-control">
+                            </div>
+                            <div class="form-buttons">
+                                <button type="submit" class="btn btn-primary">Done</button>
+                                <button type="button" class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
                 <div class="main-table-container">
-                <a><b>Promo</b></a>
+                    <a><b>Promo</b></a>
                     <table class="main-table">
                         <thead>
                             <tr>

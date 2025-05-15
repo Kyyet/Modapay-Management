@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ModaPay Dashboard</title>
-  <link rel="stylesheet" href="style/stylee.css">
+  <link rel="stylesheet" href="style/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -39,6 +39,14 @@
                 <i class="fas fa-users"></i>
                 <span>Employment</span>
             </a>
+            <a href="recentOrder.php" class="menu-item">
+                <i class="fas fa-receipt"></i>
+                <span>Recent Order</span>
+            </a>
+            <a href="financial.php" class="menu-item">
+                <i class="fas fa-chart-line"></i> 
+                <span>Financial Statements</span>
+            </a>
         </nav>
     </aside>
     
@@ -58,10 +66,9 @@
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Search Anything">
                 </div>
-                
-                <div class="icon-button">
-                    <i class="fas fa-bell"></i>
-                </div>
+                <button class="icon-button">
+                        <i class="fas fa-bell"></i>
+                </button>
             </div>
         </div>
         
@@ -94,15 +101,15 @@
                     From last Month
                 </div>
             </div>
-            
-            <!-- Total Order -->
+
+            <!-- Average Sell -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <div class="card-icon" style="background-color: #EDF1FF; color: #6A76FF;">
-                            <i class="fas fa-shopping-cart"></i>
+                        <div class="card-icon" style="background-color: #E6FAF0; color: #38C976;">
+                            <i class="fas fa-chart-bar"></i>
                         </div>
-                        Total Order
+                        Average Sell
                     </div>
                     <div class="card-menu">
                         <i class="fas fa-ellipsis-v"></i>
@@ -110,16 +117,16 @@
                 </div>
                 
                 <div class="card-value">
-                  <div style="font-size: 14px; font-weight: normal; color: #888;">PCS</div>
-                    65
+                    <div style="font-size: 14px; font-weight: normal; color: #888;">IDR</div>
+                    4,833,119
                 </div>
                 
                 <div class="card-footer">
                     <div class="percentage warning">
                         <i class="fas fa-arrow-up"></i>
-                        2.74%
+                        3.43%
                     </div>
-                    From last day
+                    From last Month
                 </div>
             </div>
             
@@ -150,15 +157,15 @@
                     From last day
                 </div>
             </div>
-            
-            <!-- Average Sell -->
+
+            <!-- Total Order -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <div class="card-icon" style="background-color: #E6FAF0; color: #38C976;">
-                            <i class="fas fa-chart-bar"></i>
+                        <div class="card-icon" style="background-color: #EDF1FF; color: #6A76FF;">
+                            <i class="fas fa-shopping-cart"></i>
                         </div>
-                        Average Sell
+                        Total Order
                     </div>
                     <div class="card-menu">
                         <i class="fas fa-ellipsis-v"></i>
@@ -166,99 +173,81 @@
                 </div>
                 
                 <div class="card-value">
-                    <div style="font-size: 14px; font-weight: normal; color: #888;">IDR</div>
-                    4,833,119
+                    <div style="font-size: 14px; font-weight: normal; color: #888;">PCS</div>
+                    65
                 </div>
                 
                 <div class="card-footer">
                     <div class="percentage warning">
                         <i class="fas fa-arrow-up"></i>
-                        3.43%
+                        2.74%
                     </div>
-                    From last Month
+                    From last day
                 </div>
             </div>
         </div>
         
         <!-- Sales Overview dan Stock Request  -->
-        <div class="sales-stock-container">
-            <!-- Sales Overview -->
-            <div class="sales-container">
-                <div class="sales-header">
-                    <div class="sales-title">Sales Overview</div>
-                    
-                    <div class="time-filters">
-                        <div class="time-filter">Daily</div>
-                        <div class="time-filter">Weekly</div>
-                        <div class="time-filter">Monthly</div>
-                        <div class="time-filter">Yearly</div>
-                    </div>
-                </div>
-                
-                <div class="sales-chart">
-                    <!-- grafik -->
-                </div>
-            </div>
-            
+        <div class="sales-stock-container">           
             <!-- Stock Request  -->
             <div class="panel">
                 <div class="panel-header">
-                    <div class="panel-title">Stock Request</div>
-                    <div class="panel-subtitle">Request stock from cashier</div>
+                    <div class="panel-title">Account Cashier Request</div>
+                    <div class="panel-subtitle">Request account from cashier</div>
                 </div>
                 
                 <div style="overflow-y: auto; flex: 1;">
                     <table class="main-table">
                         <thead>
                             <tr>
-                                <th>ID Product</th>
-                                <th>Product Name</th>
-                                <th>Quantity</th>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Username</th>
+                                <th>Class</th>
+                                <th>No. Telp</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>65442FK131</td>
-                                <td>Old Green T-Shirt Oversize</td>
-                                <td>70</td>
+                                <td>0001</td>
+                                <td>Eja</td>
+                                <td>Eja</td>
+                                <td>XI PPLG 2</td>
+                                <td>8767890878</td>
                                 <td><div class="status-label status-accept">Accept</div></td>
                             </tr>
                             <tr>
-                                <td>28743DDS09</td>
-                                <td>Sweet Pants Vintage</td>
-                                <td>60</td>
-                                <td><div class="status-label status-private">Pending</div></td>
+                                <td>0002</td>
+                                <td>Jean</td>
+                                <td>Jean</td>
+                                <td>XI PPLG 2</td>
+                                <td>098768987</td>
+                                <td><div class="status-label status-private">Kasir</div></td>
                             </tr>
                             <tr>
-                                <td>8923WRC46</td>
-                                <td>Brown Floral Dress</td>
-                                <td>60</td>
-                                <td><div class="status-label status-public">Done</div></td>
+                                <td>0001</td>
+                                <td>Eja</td>
+                                <td>Eja</td>
+                                <td>XI PPLG 2</td>
+                                <td>8767890878</td>
+                                <td><div class="status-label status-accept">Accept</div></td>
                             </tr>
                             <tr>
-                                <td>28743DDS09</td>
-                                <td>Sweet Pants Vintage</td>
-                                <td>45</td>
-                                <td><div class="status-label status-public">Done</div></td>
+                                <td>0002</td>
+                                <td>Jean</td>
+                                <td>Jean</td>
+                                <td>XI PPLG 2</td>
+                                <td>098768987</td>
+                                <td><div class="status-label status-private">Kasir</div></td>
                             </tr>
                             <tr>
-                                <td>65442FK131</td>
-                                <td>Old Green T-Shirt Oversize</td>
-                                <td>70</td>
-                                <td><div class="status-label status-public">Done</div></td>
-                            </tr>
-                            <tr>
-                                <td>65442FK131</td>
-                                <td>Old Green T-Shirt Oversize</td>
-                                <td>25</td>
-                                <td><div class="status-label status-private">Pending</div></td>
-                            </tr>
-                            <tr>
-                                <td>8923WRC46</td>
-                                <td>Brown Floral Dress</td>
-                                <td>50</td>
-                                <td><div class="status-label status-public">Accept</div></td>
+                                <td>0002</td>
+                                <td>Jean</td>
+                                <td>Jean</td>
+                                <td>XI PPLG 2</td>
+                                <td>098768987</td>
+                                <td><div class="status-label status-private">Kasir</div></td>
                             </tr>
                         </tbody>
                     </table>
@@ -271,7 +260,8 @@
             <!-- Recent Orders -->
             <div class="panel">
                 <div class="panel-header">
-                    <div class="panel-title">Recent Order</div>
+                    <div class="panel-title">Re-Stock Request</div>
+                    <div class="panel-subtitle">Request re-Stock from cashier</div>
                 </div>
                 
                 <div style="overflow-y: auto; flex: 1;">
@@ -280,70 +270,36 @@
                             <tr>
                                 <th>ID Product</th>
                                 <th>Product Name</th>
-                                <th>Price</th>
+                                <th>Size</th>
                                 <th>Quantity</th>
-                                <th>Date time</th>
-                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Request</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>65442FK131</td>
                                 <td>Old Green T-Shirt Oversize</td>
-                                <td>139.000</td>
-                                <td>1</td>
-                                <td>08.00 - 16 April 2025</td>
-                                <td>Cash</td>
+                                <td>M</td>
+                                <td>70</td>
+                                <td></td>
+                                <td><div class="status-label status-accept">Accept</div></td>
                             </tr>
                             <tr>
                                 <td>28743DDS09</td>
                                 <td>Sweet Pants Vintage</td>
-                                <td>199.000</td>
-                                <td>1</td>
-                                <td>08.05 - 16 April 2025</td>
-                                <td>QRIS</td>
+                                <td>L</td>
+                                <td>60</td>
+                                <td><div class="status-label status-private">Pending</div></td>
+                                <td><div class="status-label status-doneRestock">Done</div></td>
                             </tr>
                             <tr>
                                 <td>8923WRC46</td>
                                 <td>Brown Floral Dress</td>
-                                <td>349.000</td>
-                                <td>1</td>
-                                <td>08.06 - 16 April 2025</td>
-                                <td>Gopay</td>
+                                <td>XL</td>
+                                <td>60</td>
+                                <td><div class="status-label status-public">Done</div></td>
                             </tr>
-                            <tr>
-                                <td>8923WRC46</td>
-                                <td>Brown Floral Dress</td>
-                                <td>349.000</td>
-                                <td>1</td>
-                                <td>08.11 - 16 April 2025</td>
-                                <td>Cash</td>
-                            </tr>
-                            <tr>
-                                <td>65442FK131</td>
-                                <td>Old Green T-Shirt Oversize</td>
-                                <td>139.000</td>
-                                <td>2</td>
-                                <td>08.15 - 16 April 2025</td>
-                                <td>OVO</td>
-                            </tr>
-                            <tr>
-                                <td>28743DDS09</td>
-                                <td>Sweet Pants Vintage</td>
-                                <td>199.000</td>
-                                <td>1</td>
-                                <td>08.22 - 16 April 2025</td>
-                                <td>Cash</td>
-                            </tr>
-                            <tr>
-                                <td>8923WRC46</td>
-                                <td>Brown Floral Dress</td>
-                                <td>349.000</td>
-                                <td>1</td>
-                                <td>08.30 - 16 April 2025</td>
-                                <td>Dana</td>
-                            </tr>
-                        </tbody>
                     </table>
                 </div>
             </div>

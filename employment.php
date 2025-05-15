@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ModaPay - Employee Dashboard</title>
-    <link rel="stylesheet" href="style/stylee.css">
+    <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -38,6 +38,14 @@
                 <a href="employment.php" class="menu-item">
                     <i class="fas fa-users"></i>
                     <span>Employment</span>
+                </a>
+                <a href="recentOrder.php" class="menu-item">
+                    <i class="fas fa-receipt"></i>
+                    <span>Recent Order</span>
+                </a>
+                <a href="financial.php" class="menu-item">
+                    <i class="fas fa-chart-line"></i> 
+                    <span>Financial Statements</span>
                 </a>
             </nav>
         </aside>
@@ -78,11 +86,11 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Username</th>
-                                <th>Password</th>
                                 <th>Gender</th>
+                                <th>Class</th>
                                 <th>Date of Birth</th>
-                                <th>Age</th>
-                                <th>Address</th>
+                                <th>No. Telp</th>
+                                <th>Tahun Masuk</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -90,41 +98,21 @@
                                 <td>0001</td>
                                 <td>Amanda Kartika Oktaviani</td>
                                 <td>Amandakartika</td>
-                                <td>khatulistiwa1337esm</td>
-                                <td>Laki-Laki</td>
+                                <td>Perempuan</td>
+                                <td>X TBS 2</td>
                                 <td>24 Oktober 2007</td>
-                                <td>17</td>
-                                <td>Jl. Yudistira RT01...</td>
+                                <td>0898765789</td>
+                                <td>2024</td>
                             </tr>
                             <tr>
                                 <td>0002</td>
                                 <td>Jilleya Casanndra</td>
                                 <td>Jilleya</td>
-                                <td>jwasgFOYB34*%s</td>
                                 <td>Perempuan</td>
+                                <td>XI TBS 3</td>
                                 <td>18 April 2007</td>
-                                <td>18</td>
-                                <td>Jl. Wiskopa Bogota...</td>
-                            </tr>
-                            <tr>
-                                <td>0003</td>
-                                <td>Zaky Rahardika</td>
-                                <td>Barak</td>
-                                <td>**fwsfsafeE89isec</td>
-                                <td>Laki-Laki</td>
-                                <td>17 Agustus 1945</td>
-                                <td>17</td>
-                                <td>Jl. Matahari RT02...</td>
-                            </tr>
-                            <tr>
-                                <td>0004</td>
-                                <td>Muhammad Rizky Ramadhan</td>
-                                <td>Riyskm</td>
-                                <td>#$%^nvogsnjga^%$#</td>
-                                <td>Laki-Laki</td>
-                                <td>30 November 1965</td>
-                                <td>17</td>
-                                <td>Jl. Duku RT03...</td>
+                                <td>09t789876789</td>
+                                <td>2020</td>
                             </tr>
                         </tbody>
                     </table>

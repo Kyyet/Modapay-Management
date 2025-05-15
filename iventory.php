@@ -4,8 +4,346 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ModaPay - Inventory</title>
-    <link rel="stylesheet" href="style/stylee.css">
+    <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
+    <style>
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; 
+        padding-top: 80px; 
+        z-index: 1000;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s linear 0.25s, opacity 0.25s 0s;
+    }
+
+    .modal-overlay.active {
+        visibility: visible;
+        opacity: 1;
+        transition-delay: 0s;
+    }
+
+    .modal-container {
+        background-color: white;
+        width: 80%; 
+        max-width: 650px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        position: relative;
+        transform: translateY(-20px);
+        transition: transform 0.25s;
+        overflow: hidden;
+    }
+
+    .modal-overlay.active .modal-container {
+        transform: translateY(0);
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 20px;
+        color: #777;
+        cursor: pointer;
+        background: none;
+        border: none;
+        z-index: 10;
+    }
+
+    /* Product Detail Modal Styles */
+    .modal-body {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    @media (min-width: 768px) {
+        .modal-body {
+            flex-direction: row;
+            gap: 30px;
+        }
+    }
+
+    .modal-product-image {
+        width: 100%;
+        height: 300px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    @media (min-width: 768px) {
+        .modal-product-image {
+            width: 300px;
+            margin-bottom: 0;
+            flex-shrink: 0;
+        }
+    }
+
+    .modal-product-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .modal-product-info {
+        flex: 1;
+    }
+
+    .modal-header {
+        margin-bottom: 15px;
+    }
+
+    .modal-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0 0 5px 0;
+    }
+
+    .product-id {
+        font-size: 14px;
+        color: #777;
+        margin-bottom: 10px;
+    }
+
+    .modal-price {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .modal-current-price {
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .modal-stock {
+        margin-bottom: 15px;
+    }
+
+    .stock-label {
+        font-size: 14px;
+        color: #777;
+        margin-bottom: 10px;
+    }
+
+    .size-options {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .size-option {
+        width: 45px;
+        height: 45px;
+        border-radius: 8px;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    .size-option.active {
+        background-color: #6A76FF;
+        color: white;
+    }
+
+    /* Edit Modal Specific Styles */
+    .edit-form-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media (min-width: 768px) {
+        .edit-form-container {
+            flex-direction: row;
+        }
+    }
+
+    .product-image-container {
+        background-color: #f9f9f9;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    @media (min-width: 768px) {
+        .product-image-container {
+            width: 40%;
+        }
+    }
+
+    .upload-image-box {
+        width: 100%;
+        max-width: 300px;
+        height: 300px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .upload-image-box img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .camera-overlay {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        background-color: #000;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .camera-overlay i {
+        color: white;
+        font-size: 18px;
+    }
+
+    .product-form {
+        padding: 20px;
+        width: 100%;
+    }
+
+    @media (min-width: 768px) {
+        .product-form {
+            width: 60%;
+        }
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        font-size: 14px;
+        background-color: #f9f9f9;
+    }
+
+    .price-input-wrapper {
+        position: relative;
+    }
+
+    .currency-prefix {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #333;
+        font-weight: 500;
+    }
+
+    #editProductPrice {
+        padding-left: 45px;
+    }
+
+    .size-stock-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    @media (min-width: 576px) {
+        .size-stock-grid {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+    }
+
+    .size-item {
+        text-align: center;
+    }
+
+    .size-item label {
+        margin-bottom: 5px;
+        text-align: center;
+    }
+
+    .size-input {
+        text-align: center;
+    }
+
+    .select-container {
+        position: relative;
+    }
+
+    .select-arrow {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: #777;
+    }
+
+    select.form-control {
+        appearance: none;
+        padding-right: 30px;
+        cursor: pointer;
+    }
+
+    .btn-done {
+        background-color: #4461F2;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 16px;
+        font-weight: 500;
+        width: 100%;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background-color 0.2s;
+    }
+
+    .btn-done:hover {
+        background-color: #3651e2;
+    }
+
+    input[readonly] {
+        background-color: #f2f2f2;
+        cursor: not-allowed; 
+    }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -38,6 +376,14 @@
                 <a href="employment.php" class="menu-item">
                     <i class="fas fa-users"></i>
                     <span>Employment</span>
+                </a>
+                <a href="recentOrder.php" class="menu-item">
+                    <i class="fas fa-receipt"></i>
+                    <span>Recent Order</span>
+                </a>
+                <a href="financial.php" class="menu-item">
+                    <i class="fas fa-chart-line"></i> 
+                    <span>Financial Statements</span>
                 </a>
             </nav>
         </aside>
@@ -117,7 +463,7 @@
                     </div>
                     <div class="product-stock">Stock: 23</div>
                     <div class="product-actions">
-                        <button class="action-button primary-action">Detail Product</button>
+                        <button class="action-button primary-action detail-btn" data-id="67342HGJ32" data-name="Grey Plain T-Shirt Tee" data-price="139000" data-original="159000" data-stock="23" data-image="image/T-Shirt.jpg">Detail Product</button>
                         <button class="action-button secondary-action">Edit</button>
                     </div>
                 </div>
@@ -134,7 +480,7 @@
                     </div>
                     <div class="product-stock">Stock: 8</div>
                     <div class="product-actions">
-                        <button class="action-button primary-action">Detail Product</button>
+                        <button class="action-button primary-action detail-btn" data-id="78945KLM21" data-name="Sweet Pants Vintage" data-price="199000" data-original="229000" data-stock="8" data-image="https://via.placeholder.com/150x150">Detail Product</button>
                         <button class="action-button secondary-action">Edit</button>
                     </div>
                 </div>
@@ -151,7 +497,7 @@
                     </div>
                     <div class="product-stock">Stock: 27</div>
                     <div class="product-actions">
-                        <button class="action-button primary-action">Detail Product</button>
+                        <button class="action-button primary-action detail-btn" data-id="32145BFD98" data-name="Brown Floral Dress" data-price="199000" data-original="259000" data-stock="27" data-image="https://via.placeholder.com/150x150">Detail Product</button>
                         <button class="action-button secondary-action">Edit</button>
                     </div>
                 </div>
@@ -168,7 +514,7 @@
                     </div>
                     <div class="product-stock">Stock: 19</div>
                     <div class="product-actions">
-                        <button class="action-button primary-action">Detail Product</button>
+                        <button class="action-button primary-action detail-btn" data-id="56743OGT45" data-name="Old Green T-Shirt Oversize" data-price="149000" data-original="179000" data-stock="19" data-image="https://via.placeholder.com/150x150">Detail Product</button>
                         <button class="action-button secondary-action">Edit</button>
                     </div>
                 </div>
@@ -185,7 +531,7 @@
                     </div>
                     <div class="product-stock">Stock: 34</div>
                     <div class="product-actions">
-                        <button class="action-button primary-action">Detail Product</button>
+                        <button class="action-button primary-action detail-btn" data-id="90876MPG12" data-name="Material Pants Grey" data-price="189000" data-original="229000" data-stock="34" data-image="https://via.placeholder.com/150x150">Detail Product</button>
                         <button class="action-button secondary-action">Edit</button>
                     </div>
                 </div>
@@ -202,7 +548,7 @@
                     </div>
                     <div class="product-stock">Stock: 45</div>
                     <div class="product-actions">
-                        <button class="action-button primary-action">Detail Product</button>
+                        <button class="action-button primary-action detail-btn" data-id="23456BPS78" data-name="Black dress with pink skirt" data-price="289000" data-original="349000" data-stock="45" data-image="https://via.placeholder.com/150x150">Detail Product</button>
                         <button class="action-button secondary-action">Edit</button>
                     </div>
                 </div>
@@ -219,7 +565,7 @@
                     </div>
                     <div class="product-stock">Stock: 21</div>
                     <div class="product-actions">
-                        <button class="action-button primary-action">Detail Product</button>
+                        <button class="action-button primary-action detail-btn" data-id="12378BDR34" data-name="Black Dress" data-price="349000" data-original="399000" data-stock="21" data-image="https://via.placeholder.com/150x150">Detail Product</button>
                         <button class="action-button secondary-action">Edit</button>
                     </div>
                 </div>
@@ -236,7 +582,7 @@
                     </div>
                     <div class="product-stock">Stock: 22</div>
                     <div class="product-actions">
-                        <button class="action-button primary-action">Detail Product</button>
+                        <button class="action-button primary-action detail-btn" data-id="45632BTS90" data-name="Black T-Shirt Regular" data-price="139000" data-original="159000" data-stock="22" data-image="https://via.placeholder.com/150x150">Detail Product</button>
                         <button class="action-button secondary-action">Edit</button>
                     </div>
                 </div>
@@ -244,8 +590,127 @@
         </main>
     </div>
 
+    <!-- Product Detail Modal -->
+    <div class="modal-overlay" id="productDetailModal">
+        <div class="modal-container">
+            <button class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-body">
+                <div class="modal-product-image">
+                    <img id="modalProductImage" src="image/T-Shirt.jpg" alt="Product Image">
+                </div>
+                
+                <div class="modal-product-info">
+                    <!-- Product name and ID moved above price -->
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="modalProductName">Grey Plain T-Shirt Tee</h2>
+                        <div class="product-id" id="modalProductId">ID Product: 67342HGJ32</div>
+                    </div>
+                    
+                    <!-- Only showing current price, original price removed -->
+                    <div class="modal-price">
+                        <div class="modal-current-price" id="modalCurrentPrice">IDR 139.000</div>
+                    </div>
+                    
+                    <div class="modal-stock">
+                        <div class="stock-label">Available Stock</div>
+                        <div class="size-options">
+                            <div class="size-option active" data-stock="12">M</div>
+                            <div class="size-option" data-stock="20">L</div>
+                            <div class="size-option" data-stock="17">XL</div>
+                        </div>
+                        <div id="modalStockCount">Stock: 12</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Product Edit Modal -->
+    <div class="modal-overlay" id="productEditModal">
+        <div class="modal-container">
+            <button class="modal-close" id="closeEditModal">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="edit-form-container">
+                <div class="product-image-container">
+                    <div class="upload-image-box">
+                        <img id="editModalProductImage" src="image/T-Shirt.jpg" alt="Product Image">
+                        <div class="camera-overlay">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-form">
+                    <form id="editProductForm">
+                        <div class="form-group">
+                            <label for="editProductName">Produk Name</label>
+                            <input type="text" id="editProductName" name="productName" class="form-control" value="Grey Plain T-Shirt Tee">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editProductId">ID Product</label>
+                            <input type="text" id="editProductId" name="productId" class="form-control" value="67342HGJ32" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editProductPrice">Harga Product</label>
+                            <div class="price-input-wrapper">
+                                <span class="currency-prefix">IDR</span>
+                                <input type="number" id="editProductPrice" name="productPrice" class="form-control" value="139000">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Stock</label>
+                            <div class="size-stock-grid">
+                                <div class="size-item">
+                                    <label for="stockS">S :</label>
+                                    <input type="number" id="stockS" name="stockS" class="form-control size-input" min="0" value="5">
+                                </div>
+                                <div class="size-item">
+                                    <label for="stockM">M :</label>
+                                    <input type="number" id="stockM" name="stockM" class="form-control size-input" min="0" value="12">
+                                </div>
+                                <div class="size-item">
+                                    <label for="stockL">L :</label>
+                                    <input type="number" id="stockL" name="stockL" class="form-control size-input" min="0" value="20">
+                                </div>
+                                <div class="size-item">
+                                    <label for="stockXL">XL :</label>
+                                    <input type="number" id="stockXL" name="stockXL" class="form-control size-input" min="0" value="17">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editProductCategory">Category</label>
+                            <div class="select-container">
+                                <select id="editProductCategory" name="productCategory" class="form-control">
+                                    <option value="Men T-Shirt" selected>Men T-Shirt</option>
+                                    <option value="Women T-Shirt">Women T-Shirt</option>
+                                    <option value="Pants">Pants</option>
+                                    <option value="Dress">Dress</option>
+                                </select>
+                                <div class="select-arrow">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn-done" id="btnSaveProduct">Done</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Timer
+        // Timer 
         function updateTime() {
             const now = new Date();
 
@@ -257,11 +722,98 @@
             document.getElementById('current-time').innerText = timeString;
         }
 
-        setInterval(updateTime, 1000);
-        updateTime();
+        // Format price with thousand separator
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
 
-        // Menu activate
+        // Open the detail modal
+        function openDetailModal(productData) {
+            const defaultProduct = {
+                name: "Grey Plain T-Shirt Tee",
+                id: "67342HGJ32",
+                price: 139000,
+                stock: 23,
+                image: "image/T-Shirt.jpg"
+            };
+
+            const product = productData || defaultProduct;
+
+            // Update modal content
+            document.getElementById('modalProductName').textContent = product.name;
+            document.getElementById('modalProductId').textContent = 'ID Product: ' + product.id;
+            document.getElementById('modalCurrentPrice').textContent = 'IDR ' + formatPrice(product.price);
+            
+            const activeSizeOption = document.querySelector('.size-option.active');
+            if (activeSizeOption) {
+                document.getElementById('modalStockCount').textContent = 'Stock: ' + activeSizeOption.dataset.stock;
+            } else {
+                document.getElementById('modalStockCount').textContent = 'Stock: ' + product.stock;
+            }
+            
+            document.getElementById('modalProductImage').src = product.image;
+            document.getElementById('modalProductImage').alt = product.name;
+            
+            // Show modal
+            const modal = document.getElementById('productDetailModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        // Close the detail modal
+        function closeDetailModal() {
+            const modal = document.getElementById('productDetailModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Enable scrolling again
+        }
+
+        // Open the edit modal
+        function openEditModal(productData) {
+            const defaultProduct = {
+                name: "Grey Plain T-Shirt Tee",
+                id: "67342HGJ32",
+                price: 139000,
+                stockS: 5,
+                stockM: 12, 
+                stockL: 20,
+                stockXL: 17,
+                category: "Men T-Shirt",
+                image: "image/T-Shirt.jpg"
+            };
+
+            const product = productData || defaultProduct;
+
+            document.getElementById('editProductName').value = product.name;
+            document.getElementById('editProductId').value = product.id;
+            document.getElementById('editProductPrice').value = product.price;
+            document.getElementById('stockS').value = product.stockS;
+            document.getElementById('stockM').value = product.stockM;
+            document.getElementById('stockL').value = product.stockL;
+            document.getElementById('stockXL').value = product.stockXL;
+            document.getElementById('editProductCategory').value = product.category;
+            document.getElementById('editModalProductImage').src = product.image;
+            document.getElementById('editModalProductImage').alt = product.name;
+
+            // Show modal
+            const modal = document.getElementById('productEditModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        // Function to close the edit modal
+        function closeEditModal() {
+            const modal = document.getElementById('productEditModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Enable scrolling again
+        }
+
+        // Initialize event listeners when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
+            // Update time immediately and set interval
+            updateTime();
+            setInterval(updateTime, 1000);
+            
+            // Menu activation
             const currentPath = window.location.pathname;
             const menuItems = document.querySelectorAll('.menu-item');
             menuItems.forEach(function(item) {
@@ -273,7 +825,103 @@
                     item.classList.add('active');
                 }
             });
+            
+            // Detail Modal Event Listeners
+            const detailCloseBtn = document.getElementById('closeModal');
+            if (detailCloseBtn) {
+                detailCloseBtn.addEventListener('click', closeDetailModal);
+            }
+
+            const detailModal = document.getElementById('productDetailModal');
+            if (detailModal) {
+                detailModal.addEventListener('click', function(e) {
+                    if (e.target === detailModal) {
+                        closeDetailModal();
+                    }
+                });
+            }
+
+            const sizeOptions = document.querySelectorAll('.size-option');
+            sizeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    sizeOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    
+                    const stockCount = this.dataset.stock;
+                    document.getElementById('modalStockCount').textContent = 'Stock: ' + stockCount;
+                });
+            });
+
+            const detailBtns = document.querySelectorAll('.detail-btn');
+            detailBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productData = {
+                        id: this.dataset.id,
+                        name: this.dataset.name,
+                        price: parseInt(this.dataset.price),
+                        stock: parseInt(this.dataset.stock),
+                        image: this.dataset.image
+                    };
+                    openDetailModal(productData);
+                });
+            });
+
+            // Edit Modal Event Listeners
+            const editCloseBtn = document.getElementById('closeEditModal');
+            if (editCloseBtn) {
+                editCloseBtn.addEventListener('click', closeEditModal);
+            }
+
+            const saveBtn = document.getElementById('btnSaveProduct');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function() {
+                    
+                    alert('Product updated successfully!');
+                    closeEditModal();
+                });
+            }
+
+            const editModal = document.getElementById('productEditModal');
+            if (editModal) {
+                editModal.addEventListener('click', function(e) {
+                    if (e.target === editModal) {
+                        closeEditModal();
+                    }
+                });
+            }
+
+            const cameraOverlay = document.querySelector('.camera-overlay');
+            if (cameraOverlay) {
+                cameraOverlay.addEventListener('click', function() {
+                    
+                    alert('Image upload functionality would be implemented here');
+                });
+            }
+
+            const editButtons = document.querySelectorAll('.action-button.secondary-action');
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    
+                    const productCard = this.closest('.product-card');
+                    const detailBtn = productCard.querySelector('.detail-btn');
+                    
+                    const productData = {
+                        id: detailBtn.dataset.id,
+                        name: detailBtn.dataset.name,
+                        price: parseInt(detailBtn.dataset.price),
+                        stockS: 5, 
+                        stockM: 12,
+                        stockL: 20,
+                        stockXL: 17,
+                        category: "Men T-Shirt", 
+                        image: detailBtn.dataset.image
+                    };
+                    
+                    openEditModal(productData);
+                });
+            });
         });
-    </script>
+   </script>
 </body>
 </html>
