@@ -10,6 +10,14 @@ function getAllUser() {
     return $result;
 }
 
+function getAllUserStatusPending() {
+    $conn = connectDatabase();
+    $sql = "SELECT user_id, username, password_hash, phone_number, gender, tahun_masuk, kelas, role_id, status, is_active FROM modapay_users WHERE status='pending' ORDER BY user_id ASC";
+    $result = $conn->query($sql);
+    $conn->close();
+    return $result;
+}
+
 // Function to get user by ID
 function getUserById($user_id) {
     $conn = connectDatabase();

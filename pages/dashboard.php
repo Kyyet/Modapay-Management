@@ -2,7 +2,7 @@
 include (__DIR__ . '/../includes/crud/crudUser.php');
 
 // Ambil data user dari database
-$users = getAllUser();
+$users = getAllUserStatusPending();
 ?>
 
 <!DOCTYPE html>
@@ -199,8 +199,8 @@ $users = getAllUser();
             <!-- User Management Table -->
             <div class="panel">
                 <div class="panel-header">
-                    <div class="panel-title">User Management</div>
-                    <div class="panel-subtitle">All registered users in the system</div>
+                    <div class="panel-title">Account Cashier Request</div>
+                    <div class="panel-subtitle">Request Account from cashier</div>
                 </div>
                 
                 <!-- tabel user -->

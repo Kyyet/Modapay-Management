@@ -23,6 +23,66 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/modalinventory.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
+    <style>
+        .danger-action {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .danger-action:hover {
+            background-color: #c82333;
+        }
+        
+        .alert {
+            transition: opacity 0.3s;
+        }
+        
+        .size-option[data-stock="0"] {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .action-button {
+            flex: 1;
+            min-width: 60px;
+            padding: 5px 8px;
+            font-size: 12px;
+        }
+
+        .featured-category {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .featured-category:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .featured-category.active-filter {
+            background: linear-gradient(135deg, #DE476F, #C23A5F);
+            color: white;
+        }
+
+        .featured-category.active-filter .available-tag {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .featured-category.active-filter .category-icon {
+            color: white;
+        }
+
+        .featured-category.active-filter h3,
+        .featured-category.active-filter .category-items {
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -590,38 +650,5 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
             }, 5000);
         });
     </script>
-
-    <style>
-        .danger-action {
-            background-color: #dc3545;
-            color: white;
-        }
-        
-        .danger-action:hover {
-            background-color: #c82333;
-        }
-        
-        .alert {
-            transition: opacity 0.3s;
-        }
-        
-        .size-option[data-stock="0"] {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .product-actions {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-        
-        .action-button {
-            flex: 1;
-            min-width: 60px;
-            padding: 5px 8px;
-            font-size: 12px;
-        }
-    </style>
 </body>
 </html>
