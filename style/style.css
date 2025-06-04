@@ -78,7 +78,7 @@ body {
 }
 
 .menu-item.active {
-  background-color: #6A76FF;
+  background-color: #DE476F;
   color: #fff;
 }
 
@@ -91,7 +91,7 @@ body {
 }
 
 .menu-item.active:hover {
-  background-color: #6A76FF;
+  background-color: #DE476F;
 }
 
 /* Main Content */
@@ -288,7 +288,7 @@ body {
 }
 
 .time-filter.active {
-  background-color: #6A76FF;
+  background-color: #DE476F;
   color: #fff;
 }
 
@@ -490,7 +490,7 @@ td {
 }
 
 .featured-category.primary {
-  background-color: #6A76FF;
+  background-color: #DE476F;
   color: white;
 }
 
@@ -617,12 +617,12 @@ td {
 }
 
 .primary-action {
-  background-color: #6A76FF;
+  background-color: #DE476F;
   color: white;
 }
 
 .primary-action:hover {
-  background-color: #5864e0;
+  background-color: #C23A5F;
 }
 
 .secondary-action {
@@ -635,7 +635,7 @@ td {
 }
 
 .highlight-outline {
-  border: 2px solid #6A76FF;
+  border: 2px solid #DE476F;
 }
 
 /* Create Promo Form Styles */
@@ -697,7 +697,7 @@ td {
 }
 
 .form-control:focus {
-  border-color: #6A76FF;
+  border-color: #DE476F;
 }
 
 .custom-select {
@@ -743,19 +743,19 @@ td {
 }
 
 .btn-primary {
-  background-color: #5864e0;
+  background-color: #DE476F;
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: #4753d0;
+  background-color: #C23A5F;
 }
 
 .btn-danger {
-  background-color: #ff4a55;
+  background-color: #FF6B6B;
   color: white;
 }
 
 .btn-danger:hover {
-  background-color: #e13f49;
+  background-color: #FF5252;
 }

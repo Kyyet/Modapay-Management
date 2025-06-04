@@ -74,14 +74,14 @@
         
         <!-- Dashboard  -->
         <div class="dashboard-cards">
-            <!-- Total Revenue  -->
+                        <!-- Total Order -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <div class="card-icon" style="background-color: #FFF5E5; color: #FFB443;">
-                            <i class="fas fa-dollar-sign"></i>
+                        <div class="card-icon" style="background-color: #EDF1FF; color: #6A76FF;">
+                            <i class="fas fa-shopping-cart"></i>
                         </div>
-                        Total Revenue
+                        Total Order
                     </div>
                     <div class="card-menu">
                         <i class="fas fa-ellipsis-v"></i>
@@ -89,47 +89,19 @@
                 </div>
                 
                 <div class="card-value">
-                    <div style="font-size: 14px; font-weight: normal; color: #888;">IDR</div>
-                    53,783,083
+                    <div style="font-size: 14px; font-weight: normal; color: #888;">PCS</div>
+                    65
                 </div>
                 
                 <div class="card-footer">
                     <div class="percentage warning">
                         <i class="fas fa-arrow-up"></i>
-                        3.45%
+                        2.74%
                     </div>
-                    From last Month
+                    From last day
                 </div>
             </div>
 
-            <!-- Average Sell -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">
-                        <div class="card-icon" style="background-color: #E6FAF0; color: #38C976;">
-                            <i class="fas fa-chart-bar"></i>
-                        </div>
-                        Average Sell
-                    </div>
-                    <div class="card-menu">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </div>
-                </div>
-                
-                <div class="card-value">
-                    <div style="font-size: 14px; font-weight: normal; color: #888;">IDR</div>
-                    4,833,119
-                </div>
-                
-                <div class="card-footer">
-                    <div class="percentage warning">
-                        <i class="fas fa-arrow-up"></i>
-                        3.43%
-                    </div>
-                    From last Month
-                </div>
-            </div>
-            
             <!-- Today Sell -->
             <div class="card">
                 <div class="card-header">
@@ -157,15 +129,15 @@
                     From last day
                 </div>
             </div>
-
-            <!-- Total Order -->
+        
+            <!-- Average Sell -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <div class="card-icon" style="background-color: #EDF1FF; color: #6A76FF;">
-                            <i class="fas fa-shopping-cart"></i>
+                        <div class="card-icon" style="background-color: #E6FAF0; color: #38C976;">
+                            <i class="fas fa-chart-bar"></i>
                         </div>
-                        Total Order
+                        Average Sell
                     </div>
                     <div class="card-menu">
                         <i class="fas fa-ellipsis-v"></i>
@@ -173,16 +145,44 @@
                 </div>
                 
                 <div class="card-value">
-                    <div style="font-size: 14px; font-weight: normal; color: #888;">PCS</div>
-                    65
+                    <div style="font-size: 14px; font-weight: normal; color: #888;">IDR</div>
+                    4,833,119
                 </div>
                 
                 <div class="card-footer">
                     <div class="percentage warning">
                         <i class="fas fa-arrow-up"></i>
-                        2.74%
+                        3.43%
                     </div>
-                    From last day
+                    From last Month
+                </div>
+            </div>
+
+            <!-- Total Revenue  -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-icon" style="background-color: #FFF5E5; color: #FFB443;">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        Total Revenue (Year)
+                    </div>
+                    <div class="card-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+                
+                <div class="card-value">
+                    <div style="font-size: 14px; font-weight: normal; color: #888;">IDR</div>
+                    53,783,083
+                </div>
+                
+                <div class="card-footer">
+                    <div class="percentage warning">
+                        <i class="fas fa-arrow-up"></i>
+                        3.45%
+                    </div>
+                    From last Month
                 </div>
             </div>
         </div>
