@@ -1,10 +1,17 @@
+<?php 
+include (__DIR__ . '/../includes/crud/crudUser.php');
+
+// Ambil data user dari database
+$users = getAllUser();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ModaPay Dashboard</title>
-  <link rel="stylesheet" href="style/style.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -12,7 +19,7 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo">
-            <img src="https://via.placeholder.com/150x50" alt="ModaPay Logo">
+            <img src="../assets/images/ModaPayWarna.png" alt="ModaPay Logo">
         </div>
 
         <div class="datetime">
@@ -27,7 +34,7 @@
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="iventory.php" class="menu-item">
+            <a href="inventory.php" class="menu-item">
                 <i class="fas fa-box"></i>
                 <span>Inventory</span>
             </a>
@@ -189,66 +196,64 @@
         
         <!-- Sales Overview dan Stock Request  -->
         <div class="sales-stock-container">           
-            <!-- Stock Request  -->
+            <!-- User Management Table -->
             <div class="panel">
                 <div class="panel-header">
-                    <div class="panel-title">Account Cashier Request</div>
-                    <div class="panel-subtitle">Request account from cashier</div>
+                    <div class="panel-title">User Management</div>
+                    <div class="panel-subtitle">All registered users in the system</div>
                 </div>
                 
+                <!-- tabel user -->
                 <div style="overflow-y: auto; flex: 1;">
                     <table class="main-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
                                 <th>Username</th>
-                                <th>Class</th>
-                                <th>No. Telp</th>
+                                <th>Phone Number</th>
+                                <th>Gender</th>
+                                <th>Tahun Masuk</th>
+                                <th>Kelas</th>
                                 <th>Status</th>
+                                <th>Is Active</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>0001</td>
-                                <td>Eja</td>
-                                <td>Eja</td>
-                                <td>XI PPLG 2</td>
-                                <td>8767890878</td>
-                                <td><div class="status-label status-accept">Accept</div></td>
-                            </tr>
-                            <tr>
-                                <td>0002</td>
-                                <td>Jean</td>
-                                <td>Jean</td>
-                                <td>XI PPLG 2</td>
-                                <td>098768987</td>
-                                <td><div class="status-label status-private">Kasir</div></td>
-                            </tr>
-                            <tr>
-                                <td>0001</td>
-                                <td>Eja</td>
-                                <td>Eja</td>
-                                <td>XI PPLG 2</td>
-                                <td>8767890878</td>
-                                <td><div class="status-label status-accept">Accept</div></td>
-                            </tr>
-                            <tr>
-                                <td>0002</td>
-                                <td>Jean</td>
-                                <td>Jean</td>
-                                <td>XI PPLG 2</td>
-                                <td>098768987</td>
-                                <td><div class="status-label status-private">Kasir</div></td>
-                            </tr>
-                            <tr>
-                                <td>0002</td>
-                                <td>Jean</td>
-                                <td>Jean</td>
-                                <td>XI PPLG 2</td>
-                                <td>098768987</td>
-                                <td><div class="status-label status-private">Kasir</div></td>
-                            </tr>
+                            <?php 
+                            if ($users && $users->num_rows > 0) {
+                                while($user = $users->fetch_assoc()) {
+                                    // Tentukan class untuk status
+                                    $statusClass = '';
+                                    switch($user['status']) {
+                                        case 'accepted':
+                                            $statusClass = 'status-accept';
+                                            break;
+                                        case 'pending':
+                                            $statusClass = 'status-private';
+                                            break;
+                                        case 'rejected':
+                                            $statusClass = 'status-expired';
+                                            break;
+                                        default:
+                                            $statusClass = 'status-private';
+                                    }
+                                    
+                                    // Tentukan class untuk is_active
+                                    $activeClass = $user['is_active'] == 'active' ? 'status-accept' : 'status-expired';
+                                    
+                                    echo "<tr>";
+                                    echo "<td>" . htmlspecialchars($user['username']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($user['phone_number'] ?? '-') . "</td>";
+                                    echo "<td>" . htmlspecialchars($user['gender'] ?? '-') . "</td>";
+                                    echo "<td>" . htmlspecialchars($user['tahun_masuk'] ?? '-') . "</td>";
+                                    echo "<td>" . htmlspecialchars($user['kelas'] ?? '-') . "</td>";
+                                    echo "<td><div class='status-label " . $statusClass . "'>" . ucfirst($user['status']) . "</div></td>";
+                                    echo "<td><div class='status-label " . $activeClass . "'>" . ucfirst($user['is_active']) . "</div></td>";
+                                    echo "</tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='8' style='text-align: center; padding: 20px;'>No users found</td></tr>";
+                            }
+                            ?>
                         </tbody>
                     </table>
                 </div>
