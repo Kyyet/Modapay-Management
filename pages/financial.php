@@ -87,7 +87,9 @@
                     </div>
                 </div>
                 <div class="sales-chart">
-                    <!-- grafik -->
+                    <div class="sales-chart svg">
+                        <img src="../assets/images/Chart&Axis.svg" alt="Chart">
+                    </div>
                 </div>
             </div>
         </div>
