@@ -76,13 +76,17 @@ body {
   transition: 0.2s;
 }
 
-.menu-item.active {
-  background-color: #DE476F;
-  color: #fff;
+.menu-item:hover {
+  color: #333;
+  transform: translateX(9px); 
+  background-color: #f0f0f0
 }
 
-.menu-item:hover {
-  background-color: #f0f0f0;
+.menu-item.active {
+  background: linear-gradient(135deg, #DE476F, #FF6B8A);
+  color: #fff;
+  transform: translateX(9px); 
+  box-shadow: 0 4px 15px rgba(222, 71, 111, 0.3);
 }
 
 .menu-item img {
