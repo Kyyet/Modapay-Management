@@ -43,15 +43,16 @@ $users = getAllUser();
             padding: 5px 10px;
             margin: 2px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 12px;
             text-decoration: none;
             display: inline-block;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
-        .btn-approve { background-color: #28a745; color: white; }
-        .btn-reject { background-color: #dc3545; color: white; }
-        .btn-activate { background-color: #007bff; color: white; }
+        .btn-approve { background-color: #DE476F; color: white; }
+        .btn-reject { background-color: #750B1F; color: white; }
+        .btn-activate { background-color: #BF012C; color: white; }
         .btn-deactivate { background-color: #6c757d; color: white; }
         .status-pending { color: #ffc107; font-weight: bold; }
         .status-approved { color: #28a745; font-weight: bold; }
@@ -168,27 +169,21 @@ $users = getAllUser();
                                     }
                                     echo "<td><span class='{$status_class}'>" . ucfirst(htmlspecialchars($row['status'])) . "</span></td>";
                                     
-                                    // Is Active with styling
-                                    $active_class = ($row['is_active'] == 'active') ? 'active-yes' : 'active-no';
-                                    $active_text = ($row['is_active'] == 'active') ? 'Active' : 'Inactive';
-                                    echo "<td><span class='{$active_class}'>{$active_text}</span></td>";
-                                    
-                                    // Action buttons
-                                    echo "<td>";
-                                    
-                                    // Status actions
-                                    if ($row['status'] == 'pending') {
-                                        echo "<a href='employment.php?action=approve&user_id=" . $row['user_id'] . "' class='action-btn btn-approve' onclick='return confirm(\"Approve this user?\")'>Approve</a>";
-                                        echo "<a href='employment.php?action=reject&user_id=" . $row['user_id'] . "' class='action-btn btn-reject' onclick='return confirm(\"Reject this user?\")'>Reject</a>";
-                                    }
-                                    
                                     // Active/Inactive actions
+                                    echo "<td>";
                                     if ($row['is_active'] == 'active') {
                                         echo "<a href='employment.php?action=deactivate&user_id=" . $row['user_id'] . "' class='action-btn btn-deactivate' onclick='return confirm(\"Deactivate this user?\")'>Deactivate</a>";
                                     } else {
                                         echo "<a href='employment.php?action=activate&user_id=" . $row['user_id'] . "' class='action-btn btn-activate' onclick='return confirm(\"Activate this user?\")'>Activate</a>";
                                     }
+                                    echo "</td>";
                                     
+                                    // Status actions
+                                    echo "<td>";
+                                    if ($row['status'] == 'pending') {
+                                        echo "<a href='employment.php?action=approve&user_id=" . $row['user_id'] . "' class='action-btn btn-approve' onclick='return confirm(\"Approve this user?\")'>Approve</a>";
+                                        echo "<a href='employment.php?action=reject&user_id=" . $row['user_id'] . "' class='action-btn btn-reject' onclick='return confirm(\"Reject this user?\")'>Reject</a>";
+                                    }
                                     echo "</td>";
                                     echo "</tr>";
                                 }

@@ -64,12 +64,12 @@ $editData = $isEdit ? getDiscountById($_GET['edit']) : null;
         }
         
         .btn-edit {
-            background-color: #17a2b8;
+            background-color: #DE476F;
             color: white;
         }
         
         .btn-delete {
-            background-color: #dc3545;
+            background-color: #750B1F ;
             color: white;
         }
         
