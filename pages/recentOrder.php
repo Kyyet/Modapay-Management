@@ -12,7 +12,7 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
-                <img src="../assets/images/ModaPayWarna.png" alt="ModaPay Logo">
+                <img src="../assets/images/ModaPay_New.png" alt="ModaPay Logo">
             </div>
 
             <div class="datetime">

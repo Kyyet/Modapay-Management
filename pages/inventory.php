@@ -20,6 +20,7 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ModaPay - Inventory</title>
+    <link rel="icon" href="../assets/images/ModaPay_Logo.png" type="image/png">
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/modalinventory.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
@@ -55,32 +56,210 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
             font-size: 12px;
         }
 
+        /* Enhanced Category Filter Cards */
         .featured-category {
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            color: #333;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        /* Shimmer effect overlay */
+        .featured-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255,255,255,0.4), 
+                transparent
+            );
+            transition: left 0.6s ease;
+            z-index: 1;
+        }
+
+        .featured-category:hover::before {
+            left: 100%;
         }
 
         .featured-category:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(222, 71, 111, 0.15), 
+                        0 0 20px rgba(222, 71, 111, 0.1);
+            border-color: rgba(222, 71, 111, 0.3);
         }
 
+        /* Sparkle effect */
+        .featured-category:hover {
+            animation: sparkle 0.6s ease-in-out;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { 
+                filter: brightness(1); 
+            }
+            50% { 
+                filter: brightness(1.1) saturate(1.2); 
+            }
+        }
+
+        /* Active state with enhanced gradient */
         .featured-category.active-filter {
-            background: linear-gradient(135deg, #DE476F, #C23A5F);
-            color: white;
+            background: linear-gradient(135deg, 
+                #DE476F 0%, 
+                #C23A5F 50%, 
+                #B8345A 100%
+            ) !important;
+            color: white !important;
+            box-shadow: 0 8px 25px rgba(222, 71, 111, 0.4),
+                        0 0 30px rgba(222, 71, 111, 0.2);
+            border-color: #DE476F;
+            transform: translateY(-4px);
+        }
+
+        .featured-category.active-filter::before {
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255,255,255,0.3), 
+                transparent
+            );
         }
 
         .featured-category.active-filter .available-tag {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.25) !important;
+            color: white !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
 
         .featured-category.active-filter .category-icon {
-            color: white;
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .featured-category.active-filter h3,
         .featured-category.active-filter .category-items {
-            color: white;
+            color: white !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Pulsing glow effect for active card */
+        .featured-category.active-filter {
+            animation: activeGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes activeGlow {
+            from {
+                box-shadow: 0 8px 25px rgba(222, 71, 111, 0.4),
+                           0 0 30px rgba(222, 71, 111, 0.2);
+            }
+            to {
+                box-shadow: 0 8px 25px rgba(222, 71, 111, 0.6),
+                           0 0 35px rgba(222, 71, 111, 0.3);
+            }
+        }
+
+        /* Enhanced icon effects */
+        .featured-category .category-icon {
+            transition: all 0.3s ease;
+            color: #DE476F !important;
+        }
+
+        .featured-category:hover .category-icon {
+            transform: scale(1.1) rotate(5deg);
+            color: #DE476F !important;
+        }
+
+        .featured-category.active-filter:hover .category-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        /* Available tag enhancement */
+        .available-tag {
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .featured-category:hover .available-tag {
+            transform: scale(1.05);
+        }
+
+        /* Category title and items enhancement */
+        .featured-category h3 {
+            transition: all 0.3s ease;
+        }
+
+        .featured-category:hover h3 {
+            transform: translateX(2px);
+        }
+
+        .category-items {
+            transition: all 0.3s ease;
+        }
+
+        .featured-category:hover .category-items {
+            transform: translateX(2px);
+        }
+
+        /* Ensure non-active cards maintain white background */
+        .featured-category:not(.active-filter) {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+            color: #333 !important;
+        }
+
+        .featured-category:not(.active-filter) h3,
+        .featured-category:not(.active-filter) .category-items {
+            color: #333 !important;
+        }
+
+        .featured-category:not(.active-filter) .category-icon {
+            color: #DE476F !important;
+        }
+
+        /* Special styling for "All Products" card */
+        .featured-category.primary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px dashed rgba(222, 71, 111, 0.3);
+        }
+
+        .featured-category.primary:hover {
+            border-style: solid;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .featured-category.primary.active-filter {
+            border-style: solid;
+        }
+
+        /* Loading shimmer effect for cards */
+        @keyframes shimmer {
+            0% {
+                background-position: -468px 0;
+            }
+            100% {
+                background-position: 468px 0;
+            }
+        }
+
+        /* Add some spacing between categories */
+        .featured-categories {
+            gap: 20px;
+        }
+
+        /* Responsive hover effects */
+        @media (max-width: 768px) {
+            .featured-category:hover {
+                transform: translateY(-4px) scale(1.01);
+            }
         }
     </style>
 </head>
@@ -89,7 +268,7 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
-                <img src="../assets/images/ModaPayWarna.png" alt="ModaPay Logo">
+                <img src="../assets/images/ModaPay_New.png" alt="ModaPay Logo">
             </div>
 
             <div class="datetime">
@@ -166,16 +345,17 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
             
             <!-- Categories -->
             <div class="featured-categories">
-                <div class="featured-category primary">
-                    <h3>Best Seller Product</h3>
+                <div class="featured-category primary" data-category="all">
+                    <h3>All Products</h3>
                     <div class="category-icon">
-                        <i class="fas fa-trophy"></i>
+                        <i class="fas fa-th-large"></i>
                     </div>
                 </div>
                 
                 <?php 
                 $categoryIcons = [
-                    'T-Shirt' => 'fas fa-tshirt',
+                    'Men T-Shirt' => 'fas fa-tshirt',
+                    'Women T-Shirt' => 'fas fa-tshirt',
                     'Pants' => 'fas fa-socks',
                     'Dress' => 'fas fa-user-tie'
                 ];
@@ -183,7 +363,7 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
                 foreach ($categoryStats as $stat): 
                     $icon = isset($categoryIcons[$stat['category']]) ? $categoryIcons[$stat['category']] : 'fas fa-box';
                 ?>
-                <div class="featured-category">
+                <div class="featured-category category-filter" data-category="<?php echo htmlspecialchars(strtolower($stat['category'])); ?>">
                     <span class="available-tag">Available</span>
                     <h3><?php echo htmlspecialchars($stat['category']); ?></h3>
                     <div class="category-items"><?php echo $stat['count']; ?> items</div>
@@ -413,21 +593,44 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
             return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
-        // Search functionality
+        // Search and filter functionality
         function filterProducts() {
+            const activeCategory = document.querySelector('.featured-category.active-filter');
+            const currentCategory = activeCategory ? activeCategory.dataset.category : 'all';
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const productCards = document.querySelectorAll('.product-card');
             
             productCards.forEach(card => {
                 const name = card.dataset.name;
-                const category = card.dataset.category;
+                const cardCategory = card.dataset.category;
+                const matchesCategory = currentCategory === 'all' || cardCategory === currentCategory;
+                const matchesSearch = searchTerm === '' || 
+                                    name.includes(searchTerm) || 
+                                    cardCategory.includes(searchTerm);
                 
-                if (name.includes(searchTerm) || category.includes(searchTerm)) {
+                if (matchesCategory && matchesSearch) {
                     card.style.display = 'block';
                 } else {
                     card.style.display = 'none';
                 }
             });
+        }
+
+        // Filter by category
+        function filterByCategory(category) {
+            // Update active category visual
+            document.querySelectorAll('.featured-category').forEach(cat => {
+                cat.classList.remove('active-filter');
+            });
+            
+            // Find and activate the selected category
+            const selectedCategory = document.querySelector(`.featured-category[data-category="${category}"]`);
+            if (selectedCategory) {
+                selectedCategory.classList.add('active-filter');
+            }
+            
+            // Apply filter
+            filterProducts();
         }
 
         // Open the detail modal
@@ -540,8 +743,22 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
             updateTime();
             setInterval(updateTime, 1000);
             
+            // Initialize with 'all' filter active
+            const allCategory = document.querySelector('.featured-category[data-category="all"]');
+            if (allCategory) {
+                allCategory.classList.add('active-filter');
+            }
+            
             // Search functionality
             document.getElementById('searchInput').addEventListener('input', filterProducts);
+
+            // Category filter functionality
+            document.querySelectorAll('.featured-category').forEach(category => {
+                category.addEventListener('click', function() {
+                    const categoryType = this.dataset.category;
+                    filterByCategory(categoryType);
+                });
+            });
             
             // Add product button
             document.getElementById('addProductBtn').addEventListener('click', function() {
@@ -649,6 +866,6 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
                 });
             }, 5000);
         });
-    </script>
+        </script>
 </body>
 </html>
