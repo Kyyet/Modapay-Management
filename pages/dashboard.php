@@ -172,7 +172,7 @@ $users = getAllUserStatusPending();
                         <div class="card-icon" style="background-color: #FFF5E5; color: #FFB443;">
                             <i class="fas fa-dollar-sign"></i>
                         </div>
-                        Total Revenue (Year)
+                        Total Revenue
                     </div>
                     <div class="card-menu">
                         <i class="fas fa-ellipsis-v"></i>
@@ -189,7 +189,7 @@ $users = getAllUserStatusPending();
                         <i class="fas fa-arrow-up"></i>
                         3.45%
                     </div>
-                    From last Month
+                    From last Year
                 </div>
             </div>
         </div>
