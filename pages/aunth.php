@@ -7,6 +7,8 @@ if (isset($_SESSION['auth']) && $_SESSION['auth'] === true) {
     exit();
 }
 
+$showSuccessAlert = false; // Flag untuk menampilkan alert
+
 // Proses form submission
 if ($_POST && isset($_POST['code'])) {
     $enteredCode = $_POST['code'];
@@ -14,8 +16,8 @@ if ($_POST && isset($_POST['code'])) {
     
     if ($enteredCode === $correctCode) {
         $_SESSION['auth'] = true;
-        header('Location: dashboard.php');
-        exit();
+        $showSuccessAlert = true; // Set flag untuk menampilkan alert
+        // Header redirect akan dipanggil lewat JavaScript setelah alert
     } else {
         $error = "Incorrect code. Please try again.";
     }
@@ -196,6 +198,13 @@ if ($_POST && isset($_POST['code'])) {
                     });
                     inputs[0].focus();
                 }, 1000);
+            <?php endif; ?>
+            
+            // Tampilkan alert sukses dan redirect
+            <?php if ($showSuccessAlert): ?>
+                alert('Authentication successful! (Maaf ada beberapa fungsi yang belum dibuat dan beberapa juga masih statis karena kami niatnya membuat web management full statis untuk keperluan presentasi saja dan lebih berfokus ke aplikasinya)');
+                // Redirect setelah alert ditutup
+                window.location.href = 'dashboard.php';
             <?php endif; ?>
         };
     </script>
