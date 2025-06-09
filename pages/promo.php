@@ -1,5 +1,12 @@
 <?php 
 include (__DIR__ . '/../includes/crud/crudDiscount.php');
+session_start();
+
+// Proteksi halaman - redirect ke auth.php jika belum login
+if (!isset($_SESSION['auth']) || $_SESSION['auth'] !== true) {
+    header('Location: aunth.php');
+    exit();
+}
 
 // Check if we're in edit mode
 $isEdit = isset($_GET['edit']);

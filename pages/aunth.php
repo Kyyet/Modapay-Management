@@ -1,3 +1,26 @@
+<?php
+session_start();
+
+// Jika sudah login, redirect ke dashboard
+if (isset($_SESSION['auth']) && $_SESSION['auth'] === true) {
+    header('Location: dashboard.php');
+    exit();
+}
+
+// Proses form submission
+if ($_POST && isset($_POST['code'])) {
+    $enteredCode = $_POST['code'];
+    $correctCode = "2025";
+    
+    if ($enteredCode === $correctCode) {
+        $_SESSION['auth'] = true;
+        header('Location: dashboard.php');
+        exit();
+    } else {
+        $error = "Incorrect code. Please try again.";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,19 +28,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Authentication</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <script>
-        // Bypass authentication
-        if (sessionStorage.getItem("authenticated")) {
-            let lastPage = sessionStorage.getItem("lastPage");
-
-            if (lastPage) {
-                window.location.href = lastPage;
-            } else {
-                window.location.href = "dashboard.php";
-            }
-        }
-    </script>
     <style>
         body {
             background: url('../assets/images/ModaPay_New.png') no-repeat center center fixed;
@@ -100,23 +110,25 @@
         <img src="../assets/images/ModaPay_New.png" alt="">
         <h3>Authenticate ModaPay</h3>
         <p>Enter the authenticate code</p>
-        <form id="auth-form">
+        <form id="auth-form" method="POST">
             <div class="d-flex justify-content-center">
-                <input type="text" maxlength="1" class="code-input" required>
-                <input type="text" maxlength="1" class="code-input" required>
-                <input type="text" maxlength="1" class="code-input" required>
-                <input type="text" maxlength="1" class="code-input" required>
+                <input type="text" maxlength="1" class="code-input" name="code1" required>
+                <input type="text" maxlength="1" class="code-input" name="code2" required>
+                <input type="text" maxlength="1" class="code-input" name="code3" required>
+                <input type="text" maxlength="1" class="code-input" name="code4" required>
             </div>
+            <input type="hidden" name="code" id="combined-code">
             <button type="submit" class="btn btn-custom">Submit</button>
-            <p id="error-message" class="error-message"></p>
+            <?php if (isset($error)): ?>
+                <p class="error-message"><?php echo $error; ?></p>
+            <?php endif; ?>
         </form>
     </div>
 
-    <script type="module">
+    <script>
         const inputs = document.querySelectorAll('.code-input');
         const form = document.getElementById('auth-form');
-        const errorMessage = document.getElementById('error-message');
-        const correctCode = "2025"; // Kode yang benar
+        const combinedCodeInput = document.getElementById('combined-code');
 
         // Fungsi untuk memastikan input sebelumnya terisi sebelum pindah ke input lain
         function checkPreviousInputs(index) {
@@ -159,45 +171,32 @@
             // Reset error saat mulai mengetik
             input.addEventListener('input', () => {
                 input.classList.remove('error');
-                errorMessage.textContent = "";
             });
         });
 
         // Handle form submission
         form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
             // Gabungkan kode dari input
             let enteredCode = "";
             inputs.forEach(input => enteredCode += input.value);
-
-            if (enteredCode === correctCode) {
-                // Simpan autentikasi di sessionStorage
-                sessionStorage.setItem("authenticated", "true");
-
-                // Redirect ke dashboard
-                window.location.href = "dashboard.php";
-            } else {
-                // Tampilkan error dan goyangkan input
-                errorMessage.textContent = "Incorrect code. Please try again.";
-                inputs.forEach(input => input.classList.add('error'));
-
-                // Kosongkan input dan kembali ke input pertama
-                setTimeout(() => {
-                    inputs.forEach(input => input.value = "");
-                    inputs[0].focus();
-                }, 300);
-            }
+            combinedCodeInput.value = enteredCode;
         });
 
         // Pastikan fokus mulai dari input pertama saat halaman dimuat
         window.onload = () => {
             inputs[0].focus();
             
-            // Jika sudah login, langsung ke dashboard
-            if (sessionStorage.getItem("authenticated") === "true") {
-                window.location.href = "dashboard.php";
-            }
+            // Jika ada error, tambahkan class error ke semua input
+            <?php if (isset($error)): ?>
+                inputs.forEach(input => input.classList.add('error'));
+                setTimeout(() => {
+                    inputs.forEach(input => {
+                        input.value = "";
+                        input.classList.remove('error');
+                    });
+                    inputs[0].focus();
+                }, 1000);
+            <?php endif; ?>
         };
     </script>
 </body>

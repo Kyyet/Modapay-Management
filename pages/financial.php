@@ -1,3 +1,13 @@
+<?php 
+session_start();
+
+// Proteksi halaman - redirect ke auth.php jika belum login
+if (!isset($_SESSION['auth']) || $_SESSION['auth'] !== true) {
+    header('Location: aunth.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

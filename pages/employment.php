@@ -1,5 +1,12 @@
 <?php
 include (__DIR__ . '/../includes/crud/crudUser.php');
+session_start();
+
+// Proteksi halaman - redirect ke auth.php jika belum login
+if (!isset($_SESSION['auth']) || $_SESSION['auth'] !== true) {
+    header('Location: aunth.php');
+    exit();
+}
 
 // Handle actions
 if (isset($_GET['action']) && isset($_GET['user_id'])) {
