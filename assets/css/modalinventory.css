@@ -7,12 +7,13 @@
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
-    align-items: flex-start; 
-    padding-top: 80px; 
+    align-items: center; /* Ubah dari flex-start ke center */
+    padding: 20px; /* Ubah dari padding-top: 80px */
     z-index: 1000;
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s linear 0.25s, opacity 0.25s 0s;
+    overflow-y: auto; /* Tambahkan scroll */
 }
 
 .modal-overlay.active {
@@ -23,14 +24,16 @@
 
 .modal-container {
     background-color: white;
-    width: 80%; 
-    max-width: 650px;
+    width: 90%; /* Ubah dari 80% */
+    max-width: 800px; /* Ubah dari 650px */
+    max-height: 90vh; /* Tambahkan max-height */
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     position: relative;
     transform: translateY(-20px);
     transition: transform 0.25s;
-    overflow: hidden;
+    overflow-y: auto; /* Tambahkan scroll untuk container */
+    margin: auto; /* Center the modal */
 }
 
 .modal-overlay.active .modal-container {
@@ -181,42 +184,40 @@
 }
 
 .upload-image-box {
-    width: 100%;
-    max-width: 300px;
-    height: 300px;
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    overflow: hidden;
     position: relative;
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 8px;
 }
 
 .upload-image-box img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .camera-overlay {
     position: absolute;
-    bottom: 15px;
-    right: 15px;
-    width: 40px;
-    height: 40px;
-    background-color: #000;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    text-align: center;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.camera-overlay i {
+.camera-overlay:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.camera-icon {
     color: white;
-    font-size: 18px;
+    font-size: 24px;
+    cursor: pointer;
+    display: block;
 }
 
 .product-form {
@@ -334,3 +335,260 @@ input[readonly] {
     background-color: #f2f2f2;
     cursor: not-allowed; 
 }
+
+.danger-action {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .danger-action:hover {
+            background-color: #c82333;
+        }
+        
+        .alert {
+            transition: opacity 0.3s;
+        }
+        
+        .size-option[data-stock="0"] {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .action-button {
+            flex: 1;
+            min-width: 60px;
+            padding: 5px 8px;
+            font-size: 12px;
+        }
+
+        /* Enhanced Category Filter Cards */
+        .featured-category {
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            color: #333;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        /* Shimmer effect overlay */
+        .featured-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255,255,255,0.4), 
+                transparent
+            );
+            transition: left 0.6s ease;
+            z-index: 1;
+        }
+
+        .featured-category:hover::before {
+            left: 100%;
+        }
+
+        .featured-category:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(222, 71, 111, 0.15), 
+                        0 0 20px rgba(222, 71, 111, 0.1);
+            border-color: rgba(222, 71, 111, 0.3);
+        }
+
+        /* Sparkle effect */
+        .featured-category:hover {
+            animation: sparkle 0.6s ease-in-out;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { 
+                filter: brightness(1); 
+            }
+            50% { 
+                filter: brightness(1.1) saturate(1.2); 
+            }
+        }
+
+        /* Active state with enhanced gradient */
+        .featured-category.active-filter {
+            background: linear-gradient(135deg, 
+                #DE476F 0%, 
+                #C23A5F 50%, 
+                #B8345A 100%
+            ) !important;
+            color: white !important;
+            box-shadow: 0 8px 25px rgba(222, 71, 111, 0.4),
+                        0 0 30px rgba(222, 71, 111, 0.2);
+            border-color: #DE476F;
+            transform: translateY(-4px);
+        }
+
+        .featured-category.active-filter::before {
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255,255,255,0.3), 
+                transparent
+            );
+        }
+
+        .featured-category.active-filter .available-tag {
+            background: rgba(255,255,255,0.25) !important;
+            color: white !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .featured-category.active-filter .category-icon {
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .featured-category.active-filter h3,
+        .featured-category.active-filter .category-items {
+            color: white !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Pulsing glow effect for active card */
+        .featured-category.active-filter {
+            animation: activeGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes activeGlow {
+            from {
+                box-shadow: 0 8px 25px rgba(222, 71, 111, 0.4),
+                           0 0 30px rgba(222, 71, 111, 0.2);
+            }
+            to {
+                box-shadow: 0 8px 25px rgba(222, 71, 111, 0.6),
+                           0 0 35px rgba(222, 71, 111, 0.3);
+            }
+        }
+
+        /* Enhanced icon effects */
+        .featured-category .category-icon {
+            transition: all 0.3s ease;
+            color: #DE476F !important;
+        }
+
+        .featured-category:hover .category-icon {
+            transform: scale(1.1) rotate(5deg);
+            color: #DE476F !important;
+        }
+
+        .featured-category.active-filter:hover .category-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        /* Available tag enhancement */
+        .available-tag {
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .featured-category:hover .available-tag {
+            transform: scale(1.05);
+        }
+
+        /* Category title and items enhancement */
+        .featured-category h3 {
+            transition: all 0.3s ease;
+        }
+
+        .featured-category:hover h3 {
+            transform: translateX(2px);
+        }
+
+        .category-items {
+            transition: all 0.3s ease;
+        }
+
+        .featured-category:hover .category-items {
+            transform: translateX(2px);
+        }
+
+        .product-card {
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Style untuk action buttons agar tidak trigger parent click */
+        .product-actions {
+            position: relative;
+            z-index: 2;
+        }
+
+        .action-button {
+            pointer-events: auto;
+        }
+
+        /* Ensure non-active cards maintain white background */
+        .featured-category:not(.active-filter) {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+            color: #333 !important;
+        }
+
+        .featured-category:not(.active-filter) h3,
+        .featured-category:not(.active-filter) .category-items {
+            color: #333 !important;
+        }
+
+        .featured-category:not(.active-filter) .category-icon {
+            color: #DE476F !important;
+        }
+
+        /* Special styling for "All Products" card */
+        .featured-category.primary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px dashed rgba(222, 71, 111, 0.3);
+        }
+
+        .featured-category.primary:hover {
+            border-style: solid;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .featured-category.primary.active-filter {
+            border-style: solid;
+        }
+
+        /* Loading shimmer effect for cards */
+        @keyframes shimmer {
+            0% {
+                background-position: -468px 0;
+            }
+            100% {
+                background-position: 468px 0;
+            }
+        }
+
+        /* Add some spacing between categories */
+        .featured-categories {
+            gap: 20px;
+        }
+
+        /* Responsive hover effects */
+        @media (max-width: 768px) {
+            .featured-category:hover {
+                transform: translateY(-4px) scale(1.01);
+            }
+        }

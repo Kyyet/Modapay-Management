@@ -153,6 +153,23 @@ class ProductCRUD {
         return $stats;
     }
     
+    // Get unique categories from database
+    public function getUniqueCategories() {
+        $conn = connectDatabase();
+        $sql = "SELECT DISTINCT category FROM modapay_products WHERE category IS NOT NULL AND category != '' ORDER BY category ASC";
+        $result = $conn->query($sql);
+        
+        $categories = [];
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $categories[] = $row['category'];
+            }
+        }
+        
+        $conn->close();
+        return $categories;
+    }
+    
     // Format price for display
     public function formatPrice($price) {
         return number_format($price, 0, ',', '.');

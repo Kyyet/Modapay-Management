@@ -9,6 +9,9 @@ $products = $productCRUD->getAllProducts();
 // Get category statistics
 $categoryStats = $productCRUD->getCategoryStats();
 
+// Get unique categories from database for dropdown
+$categories = $productCRUD->getUniqueCategories();
+
 // Handle success/error messages
 $successMessage = isset($_GET['success']) ? $_GET['success'] : '';
 $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
@@ -23,245 +26,81 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
     <link rel="icon" href="../assets/images/ModaPay_Logo.png" type="image/png">
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/modalinventory.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .danger-action {
-            background-color: #dc3545;
-            color: white;
-        }
-        
-        .danger-action:hover {
-            background-color: #c82333;
-        }
-        
-        .alert {
-            transition: opacity 0.3s;
-        }
-        
-        .size-option[data-stock="0"] {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .product-actions {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-        
-        .action-button {
-            flex: 1;
-            min-width: 60px;
-            padding: 5px 8px;
-            font-size: 12px;
-        }
+.file-upload-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 15px;
+}
 
-        /* Enhanced Category Filter Cards */
-        .featured-category {
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            color: #333;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            overflow: hidden;
-            border: 2px solid transparent;
-        }
+.file-upload-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 2;
+}
 
-        /* Shimmer effect overlay */
-        .featured-category::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255,255,255,0.4), 
-                transparent
-            );
-            transition: left 0.6s ease;
-            z-index: 1;
-        }
+.file-upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 50px;
+}
 
-        .featured-category:hover::before {
-            left: 100%;
-        }
+.file-upload-label:hover {
+    background: #e9ecef;
+    border-color: #adb5bd;
+}
 
-        .featured-category:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 12px 35px rgba(222, 71, 111, 0.15), 
-                        0 0 20px rgba(222, 71, 111, 0.1);
-            border-color: rgba(222, 71, 111, 0.3);
-        }
+.file-upload-label i {
+    margin-right: 8px;
+    color: #6c757d;
+}
 
-        /* Sparkle effect */
-        .featured-category:hover {
-            animation: sparkle 0.6s ease-in-out;
-        }
+.file-upload-text {
+    color: #6c757d;
+    font-size: 14px;
+}
 
-        @keyframes sparkle {
-            0%, 100% { 
-                filter: brightness(1); 
-            }
-            50% { 
-                filter: brightness(1.1) saturate(1.2); 
-            }
-        }
+.image-preview-container {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
 
-        /* Active state with enhanced gradient */
-        .featured-category.active-filter {
-            background: linear-gradient(135deg, 
-                #DE476F 0%, 
-                #C23A5F 50%, 
-                #B8345A 100%
-            ) !important;
-            color: white !important;
-            box-shadow: 0 8px 25px rgba(222, 71, 111, 0.4),
-                        0 0 30px rgba(222, 71, 111, 0.2);
-            border-color: #DE476F;
-            transform: translateY(-4px);
-        }
+.remove-image-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    font-size: 12px;
+}
 
-        .featured-category.active-filter::before {
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255,255,255,0.3), 
-                transparent
-            );
-        }
-
-        .featured-category.active-filter .available-tag {
-            background: rgba(255,255,255,0.25) !important;
-            color: white !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-
-        .featured-category.active-filter .category-icon {
-            color: white !important;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .featured-category.active-filter h3,
-        .featured-category.active-filter .category-items {
-            color: white !important;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-
-        /* Pulsing glow effect for active card */
-        .featured-category.active-filter {
-            animation: activeGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes activeGlow {
-            from {
-                box-shadow: 0 8px 25px rgba(222, 71, 111, 0.4),
-                           0 0 30px rgba(222, 71, 111, 0.2);
-            }
-            to {
-                box-shadow: 0 8px 25px rgba(222, 71, 111, 0.6),
-                           0 0 35px rgba(222, 71, 111, 0.3);
-            }
-        }
-
-        /* Enhanced icon effects */
-        .featured-category .category-icon {
-            transition: all 0.3s ease;
-            color: #DE476F !important;
-        }
-
-        .featured-category:hover .category-icon {
-            transform: scale(1.1) rotate(5deg);
-            color: #DE476F !important;
-        }
-
-        .featured-category.active-filter:hover .category-icon {
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        /* Available tag enhancement */
-        .available-tag {
-            transition: all 0.3s ease;
-            border-radius: 15px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .featured-category:hover .available-tag {
-            transform: scale(1.05);
-        }
-
-        /* Category title and items enhancement */
-        .featured-category h3 {
-            transition: all 0.3s ease;
-        }
-
-        .featured-category:hover h3 {
-            transform: translateX(2px);
-        }
-
-        .category-items {
-            transition: all 0.3s ease;
-        }
-
-        .featured-category:hover .category-items {
-            transform: translateX(2px);
-        }
-
-        /* Ensure non-active cards maintain white background */
-        .featured-category:not(.active-filter) {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
-            color: #333 !important;
-        }
-
-        .featured-category:not(.active-filter) h3,
-        .featured-category:not(.active-filter) .category-items {
-            color: #333 !important;
-        }
-
-        .featured-category:not(.active-filter) .category-icon {
-            color: #DE476F !important;
-        }
-
-        /* Special styling for "All Products" card */
-        .featured-category.primary {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 2px dashed rgba(222, 71, 111, 0.3);
-        }
-
-        .featured-category.primary:hover {
-            border-style: solid;
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        }
-
-        .featured-category.primary.active-filter {
-            border-style: solid;
-        }
-
-        /* Loading shimmer effect for cards */
-        @keyframes shimmer {
-            0% {
-                background-position: -468px 0;
-            }
-            100% {
-                background-position: 468px 0;
-            }
-        }
-
-        /* Add some spacing between categories */
-        .featured-categories {
-            gap: 20px;
-        }
-
-        /* Responsive hover effects */
-        @media (max-width: 768px) {
-            .featured-category:hover {
-                transform: translateY(-4px) scale(1.01);
-            }
-        }
-    </style>
+.remove-image-btn:hover {
+    background: #c82333;
+}
+</style>
 </head>
 <body>
     <div class="container">
@@ -377,41 +216,40 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
             <!-- Products Grid -->
             <div class="product-grid" id="productGrid">
                 <?php foreach ($products as $product): ?>
-                <div class="product-card" data-name="<?php echo htmlspecialchars(strtolower($product['product_name'])); ?>" data-category="<?php echo htmlspecialchars(strtolower($product['category'])); ?>">
-                    <div class="product-image">
-                        <img src="<?php echo htmlspecialchars($product['photo_url']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>">
+                    <div class="product-card clickable-card" 
+                        data-name="<?php echo htmlspecialchars(strtolower($product['product_name'])); ?>" 
+                        data-category="<?php echo htmlspecialchars(strtolower($product['category'])); ?>"
+                        data-id="<?php echo htmlspecialchars($product['product_id']); ?>"
+                        data-product-name="<?php echo htmlspecialchars($product['product_name']); ?>"
+                        data-price="<?php echo $product['price']; ?>"
+                        data-stock="<?php echo $product['stock_quantity']; ?>"
+                        data-stock-s="<?php echo $product['stock_size_s']; ?>"
+                        data-stock-m="<?php echo $product['stock_size_m']; ?>"
+                        data-stock-l="<?php echo $product['stock_size_l']; ?>"
+                        data-stock-xl="<?php echo $product['stock_size_xl']; ?>"
+                        data-product-category="<?php echo htmlspecialchars($product['category']); ?>"
+                        data-description="<?php echo htmlspecialchars($product['description']); ?>"
+                        data-image="<?php echo htmlspecialchars($product['photo_url']); ?>">
+                        <div class="product-image">
+                            <img src="<?php echo htmlspecialchars($product['photo_url']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>">
+                        </div>
+                        <div class="product-name"><?php echo htmlspecialchars($product['product_name']); ?></div>
+                        <div class="product-price">
+                            <div class="current-price">IDR <?php echo number_format($product['price'], 0, ',', '.'); ?></div>
+                        </div>
+                        <div class="product-stock">Stock: <?php echo $product['stock_quantity']; ?></div>
+                        <div class="product-actions" onclick="event.stopPropagation();">
+                            <button class="action-button secondary-action edit-btn"
+                                    data-id="<?php echo htmlspecialchars($product['product_id']); ?>">
+                                Edit
+                            </button>
+                            <button class="action-button danger-action delete-btn"
+                                    data-id="<?php echo htmlspecialchars($product['product_id']); ?>"
+                                    data-name="<?php echo htmlspecialchars($product['product_name']); ?>">
+                                Delete
+                            </button>
+                        </div>
                     </div>
-                    <div class="product-name"><?php echo htmlspecialchars($product['product_name']); ?></div>
-                    <div class="product-price">
-                        <div class="current-price">IDR <?php echo number_format($product['price'], 0, ',', '.'); ?></div>
-                    </div>
-                    <div class="product-stock">Stock: <?php echo $product['stock_quantity']; ?></div>
-                    <div class="product-actions">
-                        <button class="action-button primary-action detail-btn" 
-                                data-id="<?php echo htmlspecialchars($product['product_id']); ?>"
-                                data-name="<?php echo htmlspecialchars($product['product_name']); ?>"
-                                data-price="<?php echo $product['price']; ?>"
-                                data-stock="<?php echo $product['stock_quantity']; ?>"
-                                data-stock-s="<?php echo $product['stock_size_s']; ?>"
-                                data-stock-m="<?php echo $product['stock_size_m']; ?>"
-                                data-stock-l="<?php echo $product['stock_size_l']; ?>"
-                                data-stock-xl="<?php echo $product['stock_size_xl']; ?>"
-                                data-category="<?php echo htmlspecialchars($product['category']); ?>"
-                                data-description="<?php echo htmlspecialchars($product['description']); ?>"
-                                data-image="<?php echo htmlspecialchars($product['photo_url']); ?>">
-                            Detail Product
-                        </button>
-                        <button class="action-button secondary-action edit-btn"
-                                data-id="<?php echo htmlspecialchars($product['product_id']); ?>">
-                            Edit
-                        </button>
-                        <button class="action-button danger-action delete-btn"
-                                data-id="<?php echo htmlspecialchars($product['product_id']); ?>"
-                                data-name="<?php echo htmlspecialchars($product['product_name']); ?>">
-                            Delete
-                        </button>
-                    </div>
-                </div>
                 <?php endforeach; ?>
             </div>
         </main>
@@ -474,7 +312,7 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
                 </div>
                 
                 <div class="product-form">
-                    <form id="editProductForm" method="POST" action="../includes/crud/crudProduct.php">
+                    <form id="editProductForm" method="POST" action="../includes/crud/crudProduct.php" >
                         <input type="hidden" id="formAction" name="action" value="add">
                         <input type="hidden" id="editProductIdHidden" name="product_id" value="">
                         
@@ -528,10 +366,11 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
                             <div class="select-container">
                                 <select id="editProductCategory" name="category" class="form-control" required>
                                     <option value="">Select Category</option>
-                                    <option value="Men T-Shirt">Men T-Shirt</option>
-                                    <option value="Women T-Shirt">Women T-Shirt</option>
-                                    <option value="Pants">Pants</option>
-                                    <option value="Dress">Dress</option>
+                                    <?php foreach ($categories as $category): ?>
+                                        <option value="<?php echo htmlspecialchars($category); ?>">
+                                            <?php echo htmlspecialchars($category); ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                                 <div class="select-arrow">
                                     <i class="fas fa-chevron-down"></i>
@@ -642,6 +481,9 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
             document.getElementById('modalProductImage').src = productData.image;
             document.getElementById('modalProductImage').alt = productData.name;
             
+            // Calculate total stock from all sizes
+            const totalStock = (productData.stockS || 0) + (productData.stockM || 0) + (productData.stockL || 0) + (productData.stockXL || 0);
+            
             // Update size options with stock data
             const sizeOptions = document.querySelectorAll('.size-option');
             sizeOptions.forEach(option => {
@@ -663,10 +505,10 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
             if (firstAvailable) {
                 sizeOptions.forEach(opt => opt.classList.remove('active'));
                 firstAvailable.classList.add('active');
-                document.getElementById('modalStockCount').textContent = 'Stock: ' + firstAvailable.dataset.stock;
-            } else {
-                document.getElementById('modalStockCount').textContent = 'Stock: 0';
             }
+            
+            // Always show total stock regardless of size selection
+            document.getElementById('modalStockCount').textContent = 'Total Stock: ' + totalStock;
             
             const modal = document.getElementById('productDetailModal');
             modal.classList.add('active');
@@ -711,6 +553,11 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
             const modal = document.getElementById('productEditModal');
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
+            
+            // Scroll to top of modal
+            setTimeout(() => {
+                modal.scrollTop = 0;
+            }, 100);
         }
 
         // Close the edit modal
@@ -718,6 +565,8 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
             const modal = document.getElementById('productEditModal');
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
+            // Reset scroll position
+            modal.scrollTop = 0;
         }
 
         // Open delete confirmation modal
@@ -777,24 +626,29 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
                     if (this.dataset.stock > 0) {
                         document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('active'));
                         this.classList.add('active');
-                        document.getElementById('modalStockCount').textContent = 'Stock: ' + this.dataset.stock;
+                        // Note: We don't update modalStockCount here anymore since we want to show total stock
                     }
                 });
             });
 
             // Detail buttons
-            document.querySelectorAll('.detail-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
+            document.querySelectorAll('.clickable-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Prevent opening modal if clicking on action buttons
+                    if (e.target.closest('.product-actions')) {
+                        return;
+                    }
+                    
                     const productData = {
                         id: this.dataset.id,
-                        name: this.dataset.name,
+                        name: this.dataset.productName,
                         price: parseInt(this.dataset.price),
                         stock: parseInt(this.dataset.stock),
                         stockS: parseInt(this.dataset.stockS),
                         stockM: parseInt(this.dataset.stockM),
                         stockL: parseInt(this.dataset.stockL),
                         stockXL: parseInt(this.dataset.stockXl),
-                        category: this.dataset.category,
+                        category: this.dataset.productCategory,
                         description: this.dataset.description,
                         image: this.dataset.image
                     };
@@ -809,22 +663,23 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
             });
 
             // Edit buttons
-            document.querySelectorAll('.edit-btn').forEach(button => {
-                button.addEventListener('click', function() {
+             document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent card click
+                    
                     const productCard = this.closest('.product-card');
-                    const detailBtn = productCard.querySelector('.detail-btn');
                     
                     const productData = {
-                        id: detailBtn.dataset.id,
-                        name: detailBtn.dataset.name,
-                        price: parseInt(detailBtn.dataset.price),
-                        stockS: parseInt(detailBtn.dataset.stockS),
-                        stockM: parseInt(detailBtn.dataset.stockM),
-                        stockL: parseInt(detailBtn.dataset.stockL),
-                        stockXL: parseInt(detailBtn.dataset.stockXl),
-                        category: detailBtn.dataset.category,
-                        description: detailBtn.dataset.description,
-                        image: detailBtn.dataset.image
+                        id: productCard.dataset.id,
+                        name: productCard.dataset.productName,
+                        price: parseInt(productCard.dataset.price),
+                        stockS: parseInt(productCard.dataset.stockS),
+                        stockM: parseInt(productCard.dataset.stockM),
+                        stockL: parseInt(productCard.dataset.stockL),
+                        stockXL: parseInt(productCard.dataset.stockXl),
+                        category: productCard.dataset.productCategory,
+                        description: productCard.dataset.description,
+                        image: productCard.dataset.image
                     };
                     
                     openEditModal(productData);
@@ -840,7 +695,9 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
 
             // Delete buttons
             document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent card click
+                    
                     const productId = this.dataset.id;
                     const productName = this.dataset.name;
                     openDeleteModal(productId, productName);
@@ -866,6 +723,76 @@ $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
                 });
             }, 5000);
         });
+
+        // Handle file upload
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        // Validasi tipe file
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+        if (!allowedTypes.includes(file.type)) {
+            alert('Please select a valid image file (JPEG, PNG, or GIF)');
+            event.target.value = '';
+            return;
+        }
+        
+        // Validasi ukuran file (maksimal 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            alert('File size should not exceed 5MB');
+            event.target.value = '';
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imagePreview = document.getElementById('editModalProductImage');
+            imagePreview.src = e.target.result;
+            
+            // Show remove button
+            const removeBtn = document.getElementById('removeImageBtn');
+            removeBtn.style.display = 'block';
+            
+            // Hide file upload label
+            const uploadLabel = document.getElementById('fileUploadLabel');
+            uploadLabel.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Remove uploaded image
+function removeUploadedImage() {
+    const fileInput = document.getElementById('productPhotoFile');
+    const imagePreview = document.getElementById('editModalProductImage');
+    const removeBtn = document.getElementById('removeImageBtn');
+    const uploadLabel = document.getElementById('fileUploadLabel');
+    const photoUrlInput = document.getElementById('editProductPhotoUrl');
+    
+    // Reset file input
+    fileInput.value = '';
+    
+    // Reset image preview
+    imagePreview.src = 'https://via.placeholder.com/300x300';
+    
+    // Hide remove button
+    removeBtn.style.display = 'none';
+    
+    // Show file upload label
+    uploadLabel.style.display = 'flex';
+    
+    // Clear photo URL input
+    photoUrlInput.value = '';
+}
+
+// Convert file to base64 for form submission
+function convertFileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
+}
         </script>
 </body>
 </html>
